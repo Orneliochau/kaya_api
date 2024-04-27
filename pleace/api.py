@@ -11,4 +11,4 @@ def PlaceApi(request, payload:PleaceSchema):
 
 @api.get('/home')
 def homeView(request):
-    return {"Message":"Fuck you everyone"}
+    return {"Message":"Hello guys"}
