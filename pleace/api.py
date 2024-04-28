@@ -1,6 +1,8 @@
 from ninja import NinjaAPI
-from pleace.schema import PleaceSchema
-from pleace.models import PleaceInformation
+from pleace.schema import PleaceSchema, EmployeeIn
+from pleace.models import PleaceInformation, Employee, department_id
+
+
 
 api = NinjaAPI()
 
@@ -12,3 +14,8 @@ def PlaceApi(request, payload:PleaceSchema):
 @api.get('/home')
 def homeView(request):
     return {"Message":"Hello guys"}
+
+@api.post('/employee')
+def create_employee(request, payload:EmployeeIn):
+    employee = Employee.objects.create(**payload.dict())
+    return {'id': employee.id}

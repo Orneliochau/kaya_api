@@ -31,6 +31,8 @@ class Item(Schema):
 
 
 from ninja import Schema
+from datetime import date
+ 
 
 class PleaceSchema(Schema):
     place_name: str
@@ -38,4 +40,9 @@ class PleaceSchema(Schema):
     location: str
     price: float
     is_active: bool
+
+class EmployeeIn(Schema):
+    first_name : str
+    last_name : str
+    birthdate : date = None
 
