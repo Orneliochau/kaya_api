@@ -1,6 +1,9 @@
 from ninja import NinjaAPI
 from pleace.schema import PleaceSchema, EmployeeIn
 from pleace.models import PleaceInformation, Employee, department_id
+from django.core.files.storage import FileSystemStorage
+from ninja import UploadedFile, File
+
 
 
 api = NinjaAPI()
@@ -18,3 +21,9 @@ def homeView(request):
 def create_employee(request, payload:EmployeeIn):
     employee = Employee.objects.create(**payload.dict())
     return {'id': employee.id}
+
+STORAGE = FileSystemStorage()
+
+@api.post('upload/')
+def create_upload(request, cv:UploadedFile=File(...)):
+    filename = STORAGE.save(cv.name, cv)
