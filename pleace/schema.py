@@ -37,9 +37,15 @@ from datetime import date
 class PleaceSchema(Schema):
     place_name: str
     description: str
-    location: str
+    province: str
+    city: str
+    street_adress: str
     price: float
-    is_active: bool
+    facebook: str
+    instagram: str
+    images: str
+
+    
 
 class EmployeeIn(Schema):
     first_name : str

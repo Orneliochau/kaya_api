@@ -3,7 +3,6 @@ from pleace.schema import PleaceSchema, EmployeeIn
 from pleace.models import PleaceInformation, Employee, department_id
 
 
-
 api = NinjaAPI()
 
 @api.post('/places')
