@@ -33,7 +33,7 @@ def get_all_places(request):
 def get_place_by_id(request, place_id:int):
     try:
         place = PleaceInformation.objects.get(id=place_id)
-        return model_to_dict(place)
+        return place
     except PleaceInformation.DoesNotExist:
         raise HttpError(404, 'Place not found')
 
@@ -50,7 +50,7 @@ def update_place(request, data:PleaceSchema, place_id:int):
         place.facebook = data.facebook
         place.instagram = data.instagram
         place.save()
-        return model_to_dict(place)
+        return place
     except PleaceInformation.DoesNotExist:
         raise HttpError(404, 'Place not found')
     
