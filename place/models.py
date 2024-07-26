@@ -15,10 +15,16 @@ class PleaceInformation(models.Model):
 
 class placeImages(models.Model):
     place = models.ForeignKey(PleaceInformation, on_delete=models.CASCADE)
-    front = models.ImageField(upload_to='images/front')
-    back = models.ImageField(upload_to='images/back')
-    right = models.ImageField(upload_to='images/right')
-    left = models.ImageField(upload_to='images/left')
+    front = models.ImageField(upload_to='images/front', default='default_image.png')
+    back = models.ImageField(upload_to='images/back', default='default_image.png')
+    right = models.ImageField(upload_to='images/right', default='default_image.png')
+    left = models.ImageField(upload_to='images/left', default='default_image.png')
+    def __str__(self) -> str:
+        return self.front.name
+
+class cart(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    place = models.ManyToManyField('pleaceinformation')
 
     
     
