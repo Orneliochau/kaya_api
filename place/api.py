@@ -36,6 +36,13 @@ def get_place_by_id(request, place_id:int):
         return place
     except PleaceInformation.DoesNotExist:
         raise HttpError(404, 'Place not found')
+    
+@api.get('place')
+def get_place_by_user(request):
+    user = request.user
+    places = PleaceInformation.objects.filter(user=user)
+    response = [{'id':place.id,'name': place.place_name,'description': place.description,'province': place.province,'street_adress': place.street_adress,'price': place.price,'facebook': place.facebook,'instagram': place.instagram} for place in places]
+    return response
 
 @api.put('update/place/{place_id}')
 def update_place(request, data:PleaceSchema, place_id:int):
