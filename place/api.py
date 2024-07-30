@@ -5,12 +5,13 @@ from ninja import UploadedFile, File
 from django.http import JsonResponse
 from django.forms.models import model_to_dict
 from ninja.errors import HttpError
+import json
 
 
 api = NinjaAPI()
 
 @api.post('create/place')
-def PlaceApi(request, payload:PleaceSchema):
+def PlaceApi(request, payload:PleaceSchema, profile_photo:File[UploadedFile]):
     place_obj = PleaceInformation.objects.create(**payload.dict())
     return JsonResponse({
         'name': place_obj.place_name,
@@ -45,9 +46,10 @@ def get_place_by_user(request):
     return response
 
 @api.put('update/place/{place_id}')
-def update_place(request, data:PleaceSchema, place_id:int):
+def update_place(request, data:PleaceSchema, place_id:int, profile_photo: UploadedFile =None):
     try:
         place = PleaceInformation.objects.get(id=place_id)
+        place.profile_photo = profile_photo
         place.place_name = data.place_name
         place.description = data.description
         place.province = data.province
@@ -56,7 +58,6 @@ def update_place(request, data:PleaceSchema, place_id:int):
         place.price = data.price
         place.facebook = data.facebook
         place.instagram = data.instagram
-        place.save()
         return place
     except PleaceInformation.DoesNotExist:
         raise HttpError(404, 'Place not found')
