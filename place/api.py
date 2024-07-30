@@ -2,33 +2,20 @@ from ninja import NinjaAPI
 from place.schema import PleaceSchema
 from place.models import PleaceInformation, placeImages
 from ninja import UploadedFile, File
-from django.http import JsonResponse
-from django.forms.models import model_to_dict
+
 from ninja.errors import HttpError
-import json
+
 
 
 api = NinjaAPI()
 
 @api.post('create/place')
 def PlaceApi(request, payload:PleaceSchema, profile_photo:File[UploadedFile]):
-    place_obj = PleaceInformation.objects.create(**payload.dict())
-    return JsonResponse({
-        'name': place_obj.place_name,
-        'description': place_obj.description,
-        'province': place_obj.province,
-        'street_adress': place_obj.street_adress,
-        'price': place_obj.price,
-        'facebook': place_obj.facebook,
-        'instagram': place_obj.instagram
-
-    })
+    return PleaceInformation.objects.create(**payload.dict())
 
 @api.get('places')
 def get_all_places(request):
-    places = PleaceInformation.objects.all()
-    response = [{'id':place.id,'name': place.place_name,'description': place.description,'province': place.province,'street_adress': place.street_adress,'price': place.price,'facebook': place.facebook,'instagram': place.instagram} for place in places]
-    return response
+    return PleaceInformation.objects.all()
 
 @api.get('place/{place_id}')
 def get_place_by_id(request, place_id:int):
@@ -41,9 +28,7 @@ def get_place_by_id(request, place_id:int):
 @api.get('place')
 def get_place_by_user(request):
     user = request.user
-    places = PleaceInformation.objects.filter(user=user)
-    response = [{'id':place.id,'name': place.place_name,'description': place.description,'province': place.province,'street_adress': place.street_adress,'price': place.price,'facebook': place.facebook,'instagram': place.instagram} for place in places]
-    return response
+    return PleaceInformation.objects.filter(user=user)
 
 @api.put('update/place/{place_id}')
 def update_place(request, data:PleaceSchema, place_id:int, profile_photo: UploadedFile =None):
@@ -83,7 +68,6 @@ def upload_images(request, place_id:int, front:File[UploadedFile], back:File[Upl
 
     )
     images.save()
-    print(images)
     return images
 
 @api.put('update/images/{place_id}')
