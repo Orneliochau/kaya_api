@@ -4,6 +4,7 @@ from account.models import CustomUser
 
 class PleaceInformation(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    profile_photo = models.ImageField(upload_to='images/profiles')
     place_name = models.CharField(max_length=100)
     description = models.CharField(max_length=200)
     province = models.CharField(max_length=200)
